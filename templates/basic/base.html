@@ -15,11 +15,13 @@
         console.log(data);
     }
     function showTip(target) {
-        var ajax = new XMLHttpRequest();
-        ajax.open( "GET", "/api/v1/predict", true);
-        ajax.onload = success;
-        ajax.send( target.value );
+        data = "text=" + encodeURI( target.value );
 
+        console.log("Send", data);
+        var ajax = new XMLHttpRequest();
+        ajax.open( "GET", "/api/v1/predict?" + data, true);
+        ajax.onload = success;
+        ajax.send();
 
         tip = document.querySelector('#tip');
         tip.style.left = target.offsetLeft + 'px';

@@ -1,3 +1,5 @@
+import json
+
 from django.db import models
 import keras
 from random import randint
@@ -82,14 +84,19 @@ class Predictor():
     lookahead = 5
     maxlen = 80  # cut texts after this number of words (among top max_features most common words)
     max_features = 200  # Anzahl der Wörter
-    trainset_size = 100
+    trainset_size = 50
     testset_size = 40
-    epochs = 30
+    epochs = 3
 
     def  __init__(self):
+        self.model_file = "model.json"
         self.dataset = Dataset(self.maxlen,self.max_features)
-        self.create_model()
-        self.train()
+        self.load()
+        if self.model == None:
+            self.create_model()
+            self.train()
+            self.save()
+
 
     def create_model(self):
         self.model = Sequential()
@@ -107,6 +114,28 @@ class Predictor():
         print("Start training with (sentence * words * kind-of-word) = {}".format(X.shape))
         self.model.fit(X, y, nb_epoch=self.epochs)
 
-    def predict(self, data):
-        y = self.model.predict(np.array([self.dataset.transform(data)]))[-1]
-        return {'foo': 'bar', "data": data, "result": y}
+    def predict(self, sentence):
+        transformed = self.dataset.transform(sentence)
+        x = np.array([transformed])
+        y = self.model.predict(x)[-1]
+        return {'foo': 'bar', "data": sentence, "result": y}
+
+    def load(self):
+        self.model = None
+        try:
+            f = open(self.model_file, "r")
+            data = json.load( f.read() )
+            self.model = Sequential.from_config( data.get("config") )
+            self.model.set_weights( data.get("weights") )
+        except FileNotFoundError:
+            pass
+        except AttributeError:
+            pass
+
+    def save(self):
+        data = {
+            "config": self.model.get_config(),
+            "weights":  self.model.get_weights()
+        }
+        f = open(self.model_file, "w")
+        json.dump(data, f)

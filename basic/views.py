@@ -13,5 +13,5 @@ def home(request):
 
 
 def predict(r):
-    json = predictor.predict(r.data)
+    json = predictor.predict(r.GET.get('text'))
     return JsonResponse(json)
