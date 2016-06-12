@@ -7,7 +7,7 @@ Unsere Probleme waren u.a. das Finden eines geeigneten Datensatzes und das Train
 
 # Beispiel
 
-> Moment tat mein Bruder mir unglaublich Leid Das Mädchen in das er so sehr verliebt war hatte Selbstmord begangen Ich versetzte mich in seine Situation Ich dachte daran wenn Jonas das tun würde Mir stießen Tränen in die Augen Tim schaute mich an "Was ist los" fragte er überrascht "Ach nichts>> <<Ich habe nur grade nachgedacht
+> Mir stießen Tränen in die Augen Tim schaute mich an "Was ist los" fragte er überrascht "Ach nichts>> <<Ich habe nur grade nachgedacht
 
 ```
  [Kein Satzzeichen] =      34.17 
