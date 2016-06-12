@@ -1,0 +1,24 @@
+{% extends "basic/base.html" %}
+{% block content %}
+<br><br>
+<div class="row white">
+    <div class="large-12 columns">
+        <h2>... ohne Punkt und Komma</h2>
+    </div>
+</div>
+
+<div class="row white">
+    <div class="columns large-12">
+        <form method="POST" id="post-form">
+            {% csrf_token %}
+            <div class="fieldWrapper">
+                <textarea id="the_post" rows="20" autofocus="autofocus">
+
+                </textarea>
+            </div>
+            <div id="results"></div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
