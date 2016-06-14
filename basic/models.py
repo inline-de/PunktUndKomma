@@ -84,9 +84,11 @@ class Predictor():
     lookahead = 5
     maxlen = 30  # number of words per sentence
     max_features = 400  # Number of distinct words in the whole text
+    epochs = 20
     trainset_size = 10000
     testset_size = 200
-    epochs = 20
+    test_score = None
+    test_accuracy = None
 
     def  __init__(self):
         self.model_file = "model"
@@ -96,6 +98,7 @@ class Predictor():
             self.create_model()
             self.train()
             self.save()
+        self.run_test()
 
 
     def create_model(self):
@@ -121,7 +124,9 @@ class Predictor():
         x = np.array([transformed])
         print("shape {}".format(x.shape))
         y = self.model.predict(x)[-1]
-        return {'foo': 'bar', "data": sentence, "result": y.tolist()}
+        max_index = np.argmax(y)
+        char = list(RESULTS.keys())[list(RESULTS.values()).index(max_index)] if max_index > 0 else " "
+        return {"result": y.tolist(), "max": "{}".format(max_index), "char": char}
 
     def load(self):
         self.model = None
@@ -139,3 +144,7 @@ class Predictor():
     def save(self):
         open(self.model_file + '.json', 'w').write(self.model.to_json())
         self.model.save_weights(self.model_file + '.h5')
+
+    def run_test(self):
+        X_test, y_test = self.dataset.create(self.testset_size, False)
+        self.test_score, self.test_accuracy = self.model.evaluate(X_test, y_test)

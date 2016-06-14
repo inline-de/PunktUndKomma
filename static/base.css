@@ -1,0 +1,25 @@
+textarea{
+    height:1.5em;
+    resize:none;
+    width: 500px;
+    height: 400px;
+    margin-left: 100px;
+    float: left;
+  }
+  canvas {
+    position: absolute;
+    top:0;
+    z-index: -10;
+  }
+  .sidebar{
+    margin-top: 30px;
+    background: rgba(230,230,230,0.4);
+    color: #000;
+    padding: 3px;
+    float: right;
+    width: 300px;
+  }
+  dd, dt {float:left; width: 49%;}
+  dl .active {
+    background: rgba(230,230,230,0.7);
+  }

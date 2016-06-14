@@ -4,71 +4,11 @@
   <head>
     <meta charset="UTF-8">
     <title>talk to me</title>
-    <!-- Foundation & FontAwesome
-       <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.3/css/foundation.css">
-       <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
-    -->
-
-    <script type="text/javascript">
-    function success(evt,d,e) {
-        data = JSON.parse( evt.target.responseText );
-        console.log(data);
-    }
-    function showTip(target) {
-        data = "text=" + encodeURI( target.value );
-
-        console.log("Send", data);
-        var ajax = new XMLHttpRequest();
-        ajax.open( "GET", "/api/v1/predict?" + data, true);
-        ajax.onload = success;
-        ajax.send();
-
-        tip = document.querySelector('#tip');
-        tip.style.left = target.offsetLeft + 'px';
-        document.querySelector('#tip').style.top = target.offsetTop + 'px';
-        tip.text = "piokjsdf";
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function(){
-        /* // See more options here: https://github.com/qrohlf/trianglify#options
-        var pattern = Trianglify({
-            seed: 31337,
-            width: window.innerWidth,
-            height: window.innerHeight
-        });
-        document.body.appendChild(pattern.canvas())
-        */
-
-        document.addEventListener('input', function(e){
-            showTip(e.target);
-        });
-        var input = document.querySelector('textarea');
-        input.value = "oijas";
-        showTip(input);
-    });
-    </script>
-      <style type="text/css">
-      textarea{
-        height:1.5em;
-        resize:none;
-        width: 500px;
-        height: 400px;
-        margin-left: 100px;
-      }
-      canvas {
-        position: absolute;
-        top:0;
-        z-index: -10;
-      }
-      #tip{
-        position: fixed;
-        background-color: #ff0000;
-        width: 40px;
-        height: 30px;
-        z-index: 10;
-      }
-    </style>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "foundation.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "base.css" %}">
+    <script type="text/javascript" src="{% static "base.js" %}"></script>
+    <script type="text/javascript" src="{% static "trianglify.min.js" %}"></script>
 
     {% block head %}
     {% endblock %}
@@ -76,7 +16,6 @@
   </head>
 
   <body>
-  <div id="tip"></div>
   {% block content %}
   {% endblock %}
   </body>
