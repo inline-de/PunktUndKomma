@@ -1,3 +1,5 @@
+from json import JSONEncoder
+
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.template import loader
@@ -14,4 +16,4 @@ def home(request):
 
 def predict(r):
     json = predictor.predict(r.GET.get('text'))
-    return JsonResponse(json)
+    return JsonResponse(json, JSONEncoder)

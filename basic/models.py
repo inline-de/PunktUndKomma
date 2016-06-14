@@ -2,14 +2,14 @@ import json
 
 from django.db import models
 import keras
+import h5py
 from random import randint
-from keras.models import Sequential
+from keras.models import Sequential, model_from_json
 from keras.preprocessing import text, sequence
 from keras.layers import Dense, Activation, Embedding, LSTM, Masking
 from keras.optimizers import SGD
 import numpy as np
 
-# Create your models here.
 
 RESULTS = {
     '.': 1,
@@ -82,14 +82,14 @@ class Dataset():
 
 class Predictor():
     lookahead = 5
-    maxlen = 80  # cut texts after this number of words (among top max_features most common words)
-    max_features = 200  # Anzahl der Wörter
-    trainset_size = 50
-    testset_size = 40
-    epochs = 3
+    maxlen = 30  # number of words per sentence
+    max_features = 400  # Number of distinct words in the whole text
+    trainset_size = 10000
+    testset_size = 200
+    epochs = 20
 
     def  __init__(self):
-        self.model_file = "model.json"
+        self.model_file = "model"
         self.dataset = Dataset(self.maxlen,self.max_features)
         self.load()
         if self.model == None:
@@ -105,7 +105,9 @@ class Predictor():
         self.model.add(LSTM(128, dropout_W=0.2, dropout_U=0.2))  # try using a GRU instead, for fun
         self.model.add(Dense(len(RESULTS) + 1))
         # model.add(Activation('relu'))
-        # try using different optimizers and different optimizer configs
+        self.compile()
+    
+    def compile(self):
         self.model.compile(loss='binary_crossentropy',
                       optimizer='adam', metrics=['accuracy'])
 
@@ -117,25 +119,23 @@ class Predictor():
     def predict(self, sentence):
         transformed = self.dataset.transform(sentence)
         x = np.array([transformed])
+        print("shape {}".format(x.shape))
         y = self.model.predict(x)[-1]
-        return {'foo': 'bar', "data": sentence, "result": y}
+        return {'foo': 'bar', "data": sentence, "result": y.tolist()}
 
     def load(self):
         self.model = None
         try:
-            f = open(self.model_file, "r")
-            data = json.load( f.read() )
-            self.model = Sequential.from_config( data.get("config") )
-            self.model.set_weights( data.get("weights") )
+            print("Try loading model {}.h5 and {}.json".format(self.model_file, self.model_file) )
+            self.model = model_from_json(open(self.model_file + '.json').read())
+            self.model.load_weights(self.model_file + '.h5')
+            self.compile()
+            print("Model loaded")
         except FileNotFoundError:
             pass
         except AttributeError:
             pass
 
     def save(self):
-        data = {
-            "config": self.model.get_config(),
-            "weights":  self.model.get_weights()
-        }
-        f = open(self.model_file, "w")
-        json.dump(data, f)
+        open(self.model_file + '.json', 'w').write(self.model.to_json())
+        self.model.save_weights(self.model_file + '.h5')
