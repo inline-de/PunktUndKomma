@@ -1,0 +1,71 @@
+{
+  "sample_weight_mode": null,
+  "class_name": "Sequential",
+  "loss": "binary_crossentropy",
+  "keras_version": "1.0.4",
+  "optimizer": {
+    "lr": 0.0010000000474974513,
+    "beta_1": 0.8999999761581421,
+    "name": "Adam",
+    "epsilon": 1e-08,
+    "beta_2": 0.9990000128746033
+  },
+  "config": [
+    {
+      "class_name": "Masking",
+      "config": {
+        "input_dtype": "float32",
+        "batch_input_shape": [
+          null,
+          30,
+          400
+        ],
+        "name": "masking_1",
+        "trainable": true,
+        "mask_value": 0
+      }
+    },
+    {
+      "class_name": "LSTM",
+      "config": {
+        "go_backwards": false,
+        "consume_less": "cpu",
+        "b_regularizer": null,
+        "U_regularizer": null,
+        "forget_bias_init": "one",
+        "inner_init": "orthogonal",
+        "inner_activation": "hard_sigmoid",
+        "return_sequences": false,
+        "input_dim": 400,
+        "dropout_U": 0.2,
+        "unroll": false,
+        "init": "glorot_uniform",
+        "trainable": true,
+        "W_regularizer": null,
+        "output_dim": 128,
+        "input_length": null,
+        "name": "lstm_1",
+        "stateful": false,
+        "dropout_W": 0.2,
+        "activation": "tanh"
+      }
+    },
+    {
+      "class_name": "Dense",
+      "config": {
+        "W_constraint": null,
+        "bias": true,
+        "b_regularizer": null,
+        "b_constraint": null,
+        "input_dim": null,
+        "activity_regularizer": null,
+        "init": "glorot_uniform",
+        "trainable": true,
+        "W_regularizer": null,
+        "output_dim": 5,
+        "name": "dense_1",
+        "activation": "linear"
+      }
+    }
+  ]
+}

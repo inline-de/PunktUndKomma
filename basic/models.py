@@ -8,6 +8,7 @@ from keras.models import Sequential, model_from_json
 from keras.preprocessing import text, sequence
 from keras.layers import Dense, Activation, Embedding, LSTM, Masking
 from keras.optimizers import SGD
+import codecs
 import numpy as np
 
 
@@ -34,7 +35,7 @@ class Dataset():
     def __init__(self, maxlen, max_features):
         self.max_features = max_features
         self.maxlen = maxlen
-        dataset = open("dataset.txt")
+        dataset = codecs.open("dataset.txt", "r", "utf-8")
         all_data = dataset.read().split()
         self.all_words = list(filter(None, all_data))  # remove empty strings
         print("Total number of words: {}".format(len(self.all_words)))
